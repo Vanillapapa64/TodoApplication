@@ -1,12 +1,12 @@
 # Setting Up Backend
 **Since it is written in typsecript, You have to first transpile it down to JS file**
-1. Go to /backend 
+1. Go to [Backend](./backend) 
 2. Install all the dependencies by running `npm install -D typescript` and then `npm install`
 3. Run `tsc-b`
 4. Run `node dist/index.js`
  ---
  # Setting Up Frontend
- 1. Go to /frontend
+ 1. Go to [Frontend](./frontend)
  2. Run `npm install`
  3. Run `npm run dev`
  ---
