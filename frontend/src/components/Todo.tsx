@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
+import { rerenderatom } from "../store/atoms";
 import axios from "axios"
+import { useRecoilState,useSetRecoilState } from "recoil";
 type Todo = {
     id: number;
     title: string;
@@ -7,6 +9,7 @@ type Todo = {
 };
 export const CompletedTodos=()=>{
     const [todos,settodos]=useState<Todo[]>([])
+    const[rerender,setrerender]=useRecoilState(rerenderatom)
     
     useEffect(()=>{
         const fetchtodos=async()=>{
@@ -18,13 +21,14 @@ export const CompletedTodos=()=>{
                     }
                 })
                 settodos(response.data)
+                
                 console.log(response.data)
             }catch(err){
                 console.log(err)
             }
         } 
         fetchtodos()
-    },[todos])
+    },[rerender])
     return(
         <div className="grid gap-4 border-2 border-orange-300 rounded-xl p-6 bg-gradient-to-r from-purple-500 to-pink-500 w-80">
             <p className="pb-2 text-4xl">Completed</p>
@@ -54,6 +58,7 @@ const Todoitem: React.FC<Todoitemprop>=({todo})=>{
 }
 export const IncompleteTodos=()=>{
     const [todos,settodos]=useState<Todo[]>([])
+    const[rerender,setrerender]=useRecoilState(rerenderatom)
     
     useEffect(()=>{
         const fetchtodos=async()=>{
@@ -65,13 +70,14 @@ export const IncompleteTodos=()=>{
                     }
                 })
                 settodos(response.data)
+                
                 console.log(response.data)
             }catch(err){
                 console.log(err)
             }
         } 
         fetchtodos()
-    },[todos])
+    },[rerender])
     return(
         <div className="grid gap-4 border-2 border-orange-300 rounded-xl p-6 bg-gradient-to-r from-purple-500 to-pink-500 w-96 ">
             <p className="pb-2 text-4xl">Incomplete</p>
@@ -85,7 +91,9 @@ export const IncompleteTodos=()=>{
     )
 }
 const IncompleteTodoitem: React.FC<Todoitemprop>=({todo,settodos})=>{
+    const setrerender=useSetRecoilState(rerenderatom)
     async function buttonhandler(id:number){
+        
         const response=await axios.put("http://localhost:3000/api/v1/todo/complete?id="+id)
         try{
             if(response.status>=200&&response.status<3000){
@@ -95,6 +103,7 @@ const IncompleteTodoitem: React.FC<Todoitemprop>=({todo,settodos})=>{
                         }
                     })
                     settodos(response.data)
+                    setrerender(" ")
             }
         }catch(err){
             console.log(err)
